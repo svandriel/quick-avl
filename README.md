@@ -4,6 +4,12 @@ A Typescript implementation of an AVL tree, which is a self-balancing binary sea
 
 Named after the inventors [Adelson-Velsky and Landis](https://en.wikipedia.org/wiki/AVL_tree), an AVL tree enforces an invariant where the heights of the subtrees of a node differ by at most one. Rebalancing is performed after each insert or remove operation, if that operation made the tree imbalanced.
 
+## Installation
+
+```
+npm install quick-avl
+```
+
 ## Performance
 
 The main reason of using an AVL tree is performance. Because of its self-balancing property, worst case lookup is _O(log(n))_, compared to the plain binary search trees where this is _O(n)_.
@@ -14,12 +20,6 @@ The main reason of using an AVL tree is performance. Because of its self-balanci
 | insert    | _O(log n)_              | _O(log n)_            |
 | remove    | _O(log n)_              | _O(log n)_            |
 | traversal | _O(n)_                  | _O(n)_                |
-
-## Installation
-
-```
-npm install quick-avl
-```
 
 ## Usage
 
