@@ -1,0 +1,62 @@
+{
+  "name": "quick-avl",
+  "version": "0.0.0",
+  "description": "AVL tree: a self-balancing binary search tree",
+  "keywords": [
+    "avl",
+    "binary search tree",
+    "bst",
+    "self balancing",
+    "data structure"
+  ],
+  "author": "Sander van Driel <sander.vandriel@gmail.com>",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "bin": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf dist coverage",
+    "test": "jest",
+    "dev": "tsc -w",
+    "start": "node dist/index.js",
+    "verify": "npm run test && npm run lint && npm run clean && npm run build",
+    "lint": "eslint \"src/**/*.ts\" && prettier \"**/*.{json,md}\" --check",
+    "fix": "eslint \"src/**/*.ts\" --fix && prettier \"**/*.{json,md}\" --write",
+    "version": "npm run verify",
+    "prepublishOnly": "npm run verify"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.22",
+    "@types/node": "^14.14.37",
+    "@typescript-eslint/eslint-plugin": "^4.20.0",
+    "@typescript-eslint/parser": "^4.20.0",
+    "eslint": "^7.23.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-prettier": "^3.3.0",
+    "husky": "^4.3.8",
+    "jest": "^26.6.3",
+    "lint-staged": "^10.5.4",
+    "prettier": "^2.2.1",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^26.5.5",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run verify"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "eslint --fix"
+    ],
+    "**/*.json": [
+      "prettier --write"
+    ]
+  },
+  "engines": {
+    "node": "^10||^12||^14||^15"
+  }
+}
