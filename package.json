@@ -13,6 +13,11 @@
   "license": "MIT",
   "main": "dist/index.js",
   "bin": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/svandriel/quick-avl.git"
+  },
+  "homepage": "https://github.com/svandriel/quick-avl#quick-avl",
   "scripts": {
     "build": "tsc",
     "clean": "rimraf dist coverage",
