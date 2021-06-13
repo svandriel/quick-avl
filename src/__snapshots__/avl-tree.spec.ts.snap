@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AvlTree remove removes a leaf node 1`] = `
+exports[`AvlTree delete removes a leaf node 1`] = `
 Object {
   "balanceFactor": 0,
   "key": 40,
@@ -38,7 +38,7 @@ Object {
 }
 `;
 
-exports[`AvlTree remove removes a node that only has a left child 1`] = `
+exports[`AvlTree delete removes a node that only has a left child 1`] = `
 Object {
   "balanceFactor": 0,
   "key": 30,
@@ -71,7 +71,7 @@ Object {
 }
 `;
 
-exports[`AvlTree remove removes a node that only has a right child 1`] = `
+exports[`AvlTree delete removes a node that only has a right child 1`] = `
 Object {
   "balanceFactor": 0,
   "key": 30,
@@ -104,7 +104,7 @@ Object {
 }
 `;
 
-exports[`AvlTree remove removes a node with 2 children where its predecessor is its direct child 1`] = `
+exports[`AvlTree delete removes a node with 2 children where its predecessor is its direct child 1`] = `
 Object {
   "balanceFactor": 0,
   "key": 4,
@@ -142,7 +142,7 @@ Object {
 }
 `;
 
-exports[`AvlTree remove removes a root node that only has a left child 1`] = `
+exports[`AvlTree delete removes a root node that only has a left child 1`] = `
 Object {
   "balanceFactor": 0,
   "key": 0,
@@ -150,7 +150,7 @@ Object {
 }
 `;
 
-exports[`AvlTree remove removes a root node when left-heavy and predecessor has left child 1`] = `
+exports[`AvlTree delete removes a root node when left-heavy and predecessor has left child 1`] = `
 Object {
   "balanceFactor": 0,
   "key": 30,
@@ -188,7 +188,7 @@ Object {
 }
 `;
 
-exports[`AvlTree remove removes a root node when left-heavy and predecessor has no left child 1`] = `
+exports[`AvlTree delete removes a root node when left-heavy and predecessor has no left child 1`] = `
 Object {
   "balanceFactor": 0,
   "key": 30,
@@ -226,7 +226,7 @@ Object {
 }
 `;
 
-exports[`AvlTree remove removes a root node when right-heavy 1`] = `
+exports[`AvlTree delete removes a root node when right-heavy 1`] = `
 Object {
   "balanceFactor": 0,
   "key": 50,
@@ -264,7 +264,7 @@ Object {
 }
 `;
 
-exports[`AvlTree remove removes an intermediate node when left-heavy and predecessor has no right child 1`] = `
+exports[`AvlTree delete removes an intermediate node when left-heavy and predecessor has no right child 1`] = `
 Object {
   "balanceFactor": 0,
   "key": 40,
@@ -302,7 +302,7 @@ Object {
 }
 `;
 
-exports[`AvlTree remove removes an intermediate node when right-heavy and successor has no right child 1`] = `
+exports[`AvlTree delete removes an intermediate node when right-heavy and successor has no right child 1`] = `
 Object {
   "balanceFactor": 0,
   "key": 40,

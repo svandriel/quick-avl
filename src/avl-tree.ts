@@ -9,29 +9,64 @@ import {
     rotateRight
 } from './avl-tree-utils';
 
-export class AvlTree<K = any, V = any> {
+/**
+ * An AVL tree, a self-balancing binary search tree.
+ * Acts as a key-value map.
+ */
+export class AvlTree<K = any, V = any> implements Map<K, V> {
     private _root?: AvlTreeNode<K, V>;
     private _size = 0;
 
+    /**
+     * Creates an AVL tree.
+     * @param compareFunction A comparison function that enforces a total ordering:
+     *  i.e. if fn(a, b) < 0 then fn(b, a) > 0.
+     */
     constructor(private compareFunction: CompareFunction<K> = defaultCompareFunction) {}
 
+    /**
+     * The number of elements in the AVL tree.
+     */
     get size(): number {
         return this._size;
     }
 
+    /**
+     * The root node of the tree.
+     */
     get root(): AvlTreeNode<K, V> | undefined {
         return this._root;
     }
 
+    clear(): void {
+        this._root = undefined;
+        this._size = 0;
+    }
+
+    /**
+     * Converts the tree to a structure that can be serialized to JSON
+     * (i.e. has no circular structure)
+     * @returns A JSON-friendly represenation of this tree.
+     */
     toJSON(): AvlTreeNode<K, V> | undefined {
         return this._root && nodeToJson(this._root);
     }
 
-    contains(key: K): boolean {
-        return !!this.findNode(key);
+    /**
+     * Checks if the tree contains a certain key.
+     * @param key The key to check
+     * @returns True if the key exists in this tree, false otherwise.
+     */
+    has(key: K): boolean {
+        return !!this.getNode(key);
     }
 
-    findNode(key: K): AvlTreeNode<K, V> | undefined {
+    /**
+     * Finds a node with a specified key.
+     * @param key Key to search for.
+     * @returns The node, or undefined if not found
+     */
+    getNode(key: K): AvlTreeNode<K, V> | undefined {
         let current: AvlTreeNode<K, V> | undefined = this._root;
         while (current) {
             const cmp = this.compareFunction(key, current.key);
@@ -47,8 +82,27 @@ export class AvlTree<K = any, V = any> {
         return current;
     }
 
-    find(key: K): V | undefined {
-        return this.findNode(key)?.value;
+    /**
+     * Finds a value associated with a specified key.
+     * @param key Key to search for.
+     * @returns The value, or undefined if not found.
+     */
+    get(key: K): V | undefined {
+        return this.getNode(key)?.value;
+    }
+
+    /**
+     * Inserts a key-value pair into the AVL tree. Throws
+     * an error if the key already exists
+     * @param key The key used to determine the order in the tree
+     * @param value The value attached to the key
+     * @returns The tree itself (for chaining)
+     */
+    set(key: K, value: V): this {
+        if (!this.insert(key, value)) {
+            throw new Error(`Key already exists: ${key}`);
+        }
+        return this;
     }
 
     /**
@@ -119,12 +173,20 @@ export class AvlTree<K = any, V = any> {
      * @param key The key to search for
      * @returns True if the item was found and removed, false otherwise.
      */
-    remove(key: K): boolean {
-        const node = this.findNode(key);
+    delete(key: K): boolean {
+        const node = this.getNode(key);
         if (!node) {
             return false;
         }
+        this.deleteNode(node);
+        return true;
+    }
 
+    /**
+     * Removes a node from the tree.
+     * @param node The node to remove.
+     */
+    deleteNode(node: AvlTreeNode<K, V>): void {
         let rebalanceStartNode: AvlTreeNode<K, V> | undefined;
         let removedNodeWasOnLeft: boolean;
 
@@ -259,59 +321,91 @@ export class AvlTree<K = any, V = any> {
         if (rebalanceStartNode) {
             this.rebalanceAfterDeletion(rebalanceStartNode, removedNodeWasOnLeft);
         }
-
-        return true;
     }
 
+    /**
+     * Converts the tree to a human-readable representation.
+     * @returns A nice visualisation.
+     */
     toString(): string {
         return printTreeNode(this._root);
     }
 
+    get [Symbol.toStringTag](): string {
+        return 'AvlTree';
+    }
+
+    /**
+     * Prints a human-readable representation to the console.
+     */
     /* istanbul ignore next */
     print(): void {
         console.log(this.toString());
     }
 
-    keys(): K[] {
-        const results: K[] = [];
-        for (const node of this) {
-            results.push(node.key);
-        }
-        return results;
-    }
-
-    values(): V[] {
-        const results: V[] = [];
-        for (const node of this) {
-            results.push(node.value);
-        }
-        return results;
-    }
-
-    forEach(fn: (node: AvlTreeNode<K, V>, index: number) => void): void {
-        let index = 0;
-        for (const node of this) {
-            fn(node, index);
-            index += 1;
+    /**
+     * Gets an array with the keys in this tree.
+     * @returns The keys
+     */
+    *keys(): Generator<K> {
+        for (const [key] of this) {
+            yield key;
         }
     }
 
-    map<T>(fn: (node: AvlTreeNode<K, V>, index: number) => T): T[] {
+    keyList(): K[] {
+        return Array.from(this.keys());
+    }
+
+    /**
+     * Gets an array with the values in this tree.
+     * @returns The values,
+     */
+    *values(): Generator<V> {
+        for (const [, value] of this) {
+            yield value;
+        }
+    }
+
+    valueList(): V[] {
+        return Array.from(this.values());
+    }
+
+    /**
+     * Executes a function on each node in the tree.
+     * @param fn The iteration function
+     */
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    forEach(fn: (value: V, key: K, map: AvlTree<K, V>) => void, thisArg?: any): void {
+        for (const [key, value] of this) {
+            fn.apply(thisArg, [value, key, this]);
+        }
+    }
+
+    /**
+     * Calls a defined callback function on each tree node, and returns
+     * an array that contains the results.
+     * @param fn A function that accepts up to two arguments. The map method calls the callbackfn function one time for each node in the tree.
+     * @returns An array containing the results
+     */
+    map<T>(fn: (entry: [K, V], index: number) => T): T[] {
         const results: T[] = [];
         let index = 0;
-        for (const node of this) {
-            results.push(fn(node, index));
+        for (const entry of this) {
+            results.push(fn(entry, index));
             index += 1;
         }
         return results;
     }
 
-    entries(): [K, V][] {
-        const results: [K, V][] = [];
-        for (const node of this) {
-            results.push([node.key, node.value]);
+    *entries(): Generator<[K, V]> {
+        for (const [key, value] of this) {
+            yield [key, value];
         }
-        return results;
+    }
+
+    entryList(): [K, V][] {
+        return Array.from(this.entries());
     }
 
     minKey(): K | undefined {
@@ -354,25 +448,25 @@ export class AvlTree<K = any, V = any> {
         return current;
     }
 
-    at(index: number): AvlTreeNode<K, V> | undefined {
+    at(index: number): [K, V] | undefined {
         if (index < 0 || index >= this._size) {
             throw new Error(`Index out of bounds: ${index}`);
         }
-        let selected: AvlTreeNode<K, V> | undefined;
-        this.walk((node, i, done) => {
+        let selected: [K, V] | undefined;
+        this.walk((entry, i, done) => {
             if (index === i) {
-                selected = node;
+                selected = entry;
                 done();
             }
         });
         return selected;
     }
 
-    walk(fn: (node: AvlTreeNode<K, V>, index: number, done: () => void) => void): void {
+    walk(fn: (entry: [K, V], index: number, done: () => void) => void): void {
         let i = 0;
         let isDone = false;
-        for (const n of this) {
-            fn(n, i, () => (isDone = true));
+        for (const entry of this) {
+            fn(entry, i, () => (isDone = true));
             i += 1;
             if (isDone) {
                 break;
@@ -428,7 +522,7 @@ export class AvlTree<K = any, V = any> {
      * Returns an iterator for the nodes.
      * Usable with the 'for ... of' syntax.
      */
-    *[Symbol.iterator](): Generator<AvlTreeNode<K, V>> {
+    *[Symbol.iterator](): Generator<[K, V]> {
         const stack: AvlTreeNode<K, V>[] = [];
 
         let current: AvlTreeNode<K, V> | undefined = this._root;
@@ -439,7 +533,7 @@ export class AvlTree<K = any, V = any> {
                 current = current.left;
             } else if (stack.length > 0) {
                 current = stack.pop() as AvlTreeNode<K, V>;
-                yield current;
+                yield [current.key, current.value];
                 current = current.right;
             } else {
                 done = true;

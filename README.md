@@ -2,6 +2,8 @@
 
 A Typescript implementation of an AVL tree, which is a self-balancing binary search tree.
 
+Implements the Map interface.
+
 Named after the inventors [Adelson-Velsky and Landis](https://en.wikipedia.org/wiki/AVL_tree), an AVL tree enforces an invariant where the heights of the subtrees of a node differ by at most one. Rebalancing is performed after each insert or remove operation, if that operation made the tree imbalanced.
 
 ## Installation
@@ -30,18 +32,20 @@ import { AvlTree } from 'quick-avl';
 
 const users = new AvlTree<number, string>();
 
-users.insert(100, 'Bob'); // --> AvlTreeNode
-users.insert(200, 'Carol'); // --> AvlTreeNode
-users.insert(0, 'Alice'); // --> AvlTreeNode
+users.set(100, 'Bob').set(200, 'Carol').set(0, 'Alice');
 
-users.find(100); // --> 'Bob'
-users.contains(100); // --> true
+users.get(100); // --> 'Bob'
+users.has(100); // --> true
 
-users.remove(200); // --> true
+users.delete(200); // --> true
 
-users.values(); // --> ['Alice', 'Carol']
+users.valueList(); // --> ['Alice', 'Carol']
 
-for (const node of users) {
-  console.log(`Key: ${node.key}, value: ${node.value}`);
+for (const [key, value] of users) {
+  console.log(`Key: ${key}, value: ${value}`);
 }
 ```
+
+## Why another AVL library
+
+While there are some excellent AVL libraries available within NPM, these libraries swap out tree node values while performing tree balancing. I required an AVL library that does not replace keys or values within a node. That way, a reference to a tree node will always keep the same value.

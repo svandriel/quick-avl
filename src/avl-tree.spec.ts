@@ -38,16 +38,16 @@ describe('AvlTree', () => {
 
             expect(tree.size).toBe(7);
 
-            expect(tree.find(100)).toBe('Hundred');
-            expect(tree.find(101)).toBe('Hundred and one');
-            expect(tree.find(102)).toBe('Hundred and two');
-            expect(tree.find(130)).toBe('Hundred and thirty');
-            expect(tree.find(150)).toBe('Hundred and fifty');
-            expect(tree.find(200)).toBe('Two hundred');
-            expect(tree.find(99)).toBe('Ninety-nine');
+            expect(tree.get(100)).toBe('Hundred');
+            expect(tree.get(101)).toBe('Hundred and one');
+            expect(tree.get(102)).toBe('Hundred and two');
+            expect(tree.get(130)).toBe('Hundred and thirty');
+            expect(tree.get(150)).toBe('Hundred and fifty');
+            expect(tree.get(200)).toBe('Two hundred');
+            expect(tree.get(99)).toBe('Ninety-nine');
 
-            expect(tree.find(98)).toBeUndefined();
-            expect(tree.find(97)).toBeUndefined();
+            expect(tree.get(98)).toBeUndefined();
+            expect(tree.get(97)).toBeUndefined();
         });
 
         it('performs right rotation if necessary', () => {
@@ -187,7 +187,7 @@ describe('AvlTree', () => {
         });
     });
 
-    describe('remove', () => {
+    describe('delete', () => {
         it('removes a leaf node', () => {
             /**
              * Make a tree to start with:
@@ -211,13 +211,13 @@ describe('AvlTree', () => {
             tree.insert(5, 5);
 
             // First remove a leaf node
-            expect(tree.remove(30)).toBe(true);
+            expect(tree.delete(30)).toBe(true);
             if (PRINT_TREES) {
                 tree.print();
             }
 
             expect(tree.size).toBe(7);
-            expect(tree.keys()).toEqual([5, 10, 20, 40, 50, 60, 70]);
+            expect(tree.keyList()).toEqual([5, 10, 20, 40, 50, 60, 70]);
             expect(tree.toJSON()).toMatchSnapshot();
 
             /**
@@ -256,13 +256,13 @@ describe('AvlTree', () => {
             tree.insert(25, 25);
 
             // Remove the root node
-            expect(tree.remove(40)).toBe(true);
+            expect(tree.delete(40)).toBe(true);
             if (PRINT_TREES) {
                 tree.print();
             }
 
             expect(tree.size).toBe(7);
-            expect(tree.keys()).toEqual([10, 20, 25, 30, 50, 60, 70]);
+            expect(tree.keyList()).toEqual([10, 20, 25, 30, 50, 60, 70]);
             expect(tree.toJSON()).toMatchSnapshot();
 
             /**
@@ -299,7 +299,7 @@ describe('AvlTree', () => {
             tree.insert(15, 15);
 
             // Remove the root node
-            expect(tree.remove(40)).toBe(true);
+            expect(tree.delete(40)).toBe(true);
             if (PRINT_TREES) {
                 tree.print();
             }
@@ -342,13 +342,13 @@ describe('AvlTree', () => {
             tree.insert(55, 55);
 
             // Remove the root node
-            expect(tree.remove(40)).toBe(true);
+            expect(tree.delete(40)).toBe(true);
             if (PRINT_TREES) {
                 tree.print();
             }
 
             expect(tree.size).toBe(7);
-            expect(tree.keys()).toEqual([10, 20, 30, 50, 55, 60, 70]);
+            expect(tree.keyList()).toEqual([10, 20, 30, 50, 55, 60, 70]);
             expect(tree.toJSON()).toMatchSnapshot();
 
             /**
@@ -391,7 +391,7 @@ describe('AvlTree', () => {
                 tree.print();
             }
 
-            const removed = tree.remove(2);
+            const removed = tree.delete(2);
 
             if (PRINT_TREES) {
                 tree.print();
@@ -429,13 +429,13 @@ describe('AvlTree', () => {
             }
 
             // Remove the root node
-            expect(tree.remove(60)).toBe(true);
+            expect(tree.delete(60)).toBe(true);
             if (PRINT_TREES) {
                 tree.print();
             }
 
             expect(tree.size).toBe(7);
-            expect(tree.keys()).toEqual([10, 20, 30, 40, 50, 55, 70]);
+            expect(tree.keyList()).toEqual([10, 20, 30, 40, 50, 55, 70]);
             expect(tree.toJSON()).toMatchSnapshot();
 
             /**
@@ -476,13 +476,13 @@ describe('AvlTree', () => {
             }
 
             // Remove the root node
-            expect(tree.remove(60)).toBe(true);
+            expect(tree.delete(60)).toBe(true);
             if (PRINT_TREES) {
                 tree.print();
             }
 
             expect(tree.size).toBe(7);
-            expect(tree.keys()).toEqual([10, 20, 30, 40, 50, 65, 70]);
+            expect(tree.keyList()).toEqual([10, 20, 30, 40, 50, 65, 70]);
             expect(tree.toJSON()).toMatchSnapshot();
 
             /**
@@ -522,13 +522,13 @@ describe('AvlTree', () => {
             }
 
             // Remove the root node
-            expect(tree.remove(60)).toBe(true);
+            expect(tree.delete(60)).toBe(true);
             if (PRINT_TREES) {
                 tree.print();
             }
 
             expect(tree.size).toBe(6);
-            expect(tree.keys()).toEqual([10, 20, 25, 30, 40, 50]);
+            expect(tree.keyList()).toEqual([10, 20, 25, 30, 40, 50]);
             expect(tree.toJSON()).toMatchSnapshot();
 
             /**
@@ -559,13 +559,13 @@ describe('AvlTree', () => {
             }
 
             // Remove the root node
-            expect(tree.remove(1)).toBe(true);
+            expect(tree.delete(1)).toBe(true);
             if (PRINT_TREES) {
                 tree.print();
             }
 
             expect(tree.size).toBe(1);
-            expect(tree.keys()).toEqual([0]);
+            expect(tree.keyList()).toEqual([0]);
             expect(tree.toJSON()).toMatchSnapshot();
 
             /**
@@ -605,13 +605,13 @@ describe('AvlTree', () => {
             }
 
             // Remove the root node
-            expect(tree.remove(60)).toBe(true);
+            expect(tree.delete(60)).toBe(true);
             if (PRINT_TREES) {
                 tree.print();
             }
 
             expect(tree.size).toBe(6);
-            expect(tree.keys()).toEqual([10, 20, 25, 30, 40, 70]);
+            expect(tree.keyList()).toEqual([10, 20, 25, 30, 40, 70]);
             expect(tree.toJSON()).toMatchSnapshot();
 
             /**
@@ -645,7 +645,7 @@ describe('AvlTree', () => {
                 tree.print();
             }
 
-            const removed = tree.remove(18);
+            const removed = tree.delete(18);
             expect(removed).toBe(true);
             expect(tree.size).toBe(4);
             if (PRINT_TREES) {
@@ -657,12 +657,12 @@ describe('AvlTree', () => {
 
         it('returns false when node is not found', () => {
             const tree = new AvlTree<number, number>();
-            expect(tree.remove(40)).toBe(false);
+            expect(tree.delete(40)).toBe(false);
             tree.insert(40, 40);
             tree.insert(30, 30);
-            expect(tree.remove(30)).toBe(true);
-            expect(tree.remove(40)).toBe(true);
-            expect(tree.remove(0)).toBe(false);
+            expect(tree.delete(30)).toBe(true);
+            expect(tree.delete(40)).toBe(true);
+            expect(tree.delete(0)).toBe(false);
         });
     });
 
@@ -700,7 +700,7 @@ describe('AvlTree', () => {
         });
     });
 
-    describe('contains', () => {
+    describe('has', () => {
         it('checks if a key exists in the tree', () => {
             const tree = new AvlTree<number, string>();
             tree.insert(100, '100');
@@ -710,15 +710,15 @@ describe('AvlTree', () => {
             tree.insert(200, '200');
             tree.insert(40, '40');
 
-            expect(tree.contains(100)).toBe(true);
-            expect(tree.contains(50)).toBe(true);
-            expect(tree.contains(150)).toBe(true);
-            expect(tree.contains(125)).toBe(true);
-            expect(tree.contains(200)).toBe(true);
-            expect(tree.contains(40)).toBe(true);
+            expect(tree.has(100)).toBe(true);
+            expect(tree.has(50)).toBe(true);
+            expect(tree.has(150)).toBe(true);
+            expect(tree.has(125)).toBe(true);
+            expect(tree.has(200)).toBe(true);
+            expect(tree.has(40)).toBe(true);
 
-            expect(tree.contains(99)).toBe(false);
-            expect(tree.contains(101)).toBe(false);
+            expect(tree.has(99)).toBe(false);
+            expect(tree.has(101)).toBe(false);
         });
     });
 
@@ -732,7 +732,7 @@ describe('AvlTree', () => {
             tree.insert(200, 200);
             tree.insert(40, 40);
 
-            expect(tree.keys()).toEqual([40, 50, 100, 125, 150, 200]);
+            expect(Array.from(tree.keys())).toEqual([40, 50, 100, 125, 150, 200]);
         });
     });
 
@@ -746,7 +746,7 @@ describe('AvlTree', () => {
             tree.insert(200, '200');
             tree.insert(40, '40');
 
-            expect(tree.values()).toEqual(['40', '50', '100', '125', '150', '200']);
+            expect(Array.from(tree.values())).toEqual(['40', '50', '100', '125', '150', '200']);
         });
     });
 
@@ -759,7 +759,7 @@ describe('AvlTree', () => {
             tree.insert(125, '125');
             tree.insert(200, '200');
             tree.insert(40, '40');
-            expect(tree.entries()).toEqual([
+            expect(Array.from(tree.entries())).toEqual([
                 [40, '40'],
                 [50, '50'],
                 [100, '100'],
@@ -780,12 +780,12 @@ describe('AvlTree', () => {
             tree.insert(200, '200');
             tree.insert(40, '40');
 
-            expect(tree.at(0)?.key).toBe(40);
-            expect(tree.at(1)?.key).toBe(50);
-            expect(tree.at(2)?.key).toBe(100);
-            expect(tree.at(3)?.key).toBe(125);
-            expect(tree.at(4)?.key).toBe(150);
-            expect(tree.at(5)?.key).toBe(200);
+            expect(tree.at(0)?.[0]).toBe(40);
+            expect(tree.at(1)?.[0]).toBe(50);
+            expect(tree.at(2)?.[0]).toBe(100);
+            expect(tree.at(3)?.[0]).toBe(125);
+            expect(tree.at(4)?.[0]).toBe(150);
+            expect(tree.at(5)?.[0]).toBe(200);
         });
 
         it('throws an error when out of bounds', () => {
@@ -858,13 +858,13 @@ describe('AvlTree', () => {
             tree.insert(200, '200');
             tree.insert(40, '40');
 
-            const results: AvlTreeNode<number, string>[] = [];
-            for (const node of tree) {
-                results.push(node);
+            const results: [number, string][] = [];
+            for (const entry of tree) {
+                results.push(entry);
             }
 
             expect(results).toHaveLength(6);
-            expect(results.map(node => node.key)).toEqual([40, 50, 100, 125, 150, 200]);
+            expect(results.map(([key]) => key)).toEqual([40, 50, 100, 125, 150, 200]);
         });
     });
 
@@ -903,7 +903,7 @@ describe('AvlTree', () => {
                 tree.insert(i, i);
             });
             repeat(99, i => {
-                const node = tree.findNode(i + 1) as AvlTreeNode<number, number>;
+                const node = tree.getNode(i + 1) as AvlTreeNode<number, number>;
                 expect(tree.predecessor(node)?.key).toBe(i);
             });
         });
@@ -944,7 +944,7 @@ describe('AvlTree', () => {
                 tree.insert(i, i);
             });
             repeat(99, i => {
-                const node = tree.findNode(i) as AvlTreeNode<number, number>;
+                const node = tree.getNode(i) as AvlTreeNode<number, number>;
                 expect(tree.successor(node)?.key).toBe(i + 1);
             });
         });
@@ -979,28 +979,28 @@ describe('AvlTree', () => {
             tree.insert(8, 8);
             tree.insert(16, 16);
 
-            expect(tree.map(x => x.value * x.value)).toEqual([1, 4, 16, 64, 256]);
+            expect(tree.map(([, value]) => value * value)).toEqual([1, 4, 16, 64, 256]);
         });
     });
     describe('forEach', () => {
         it('executes a function on each node', () => {
-            const tree = new AvlTree<number, number>();
-            tree.insert(1, 1);
-            tree.insert(2, 2);
-            tree.insert(4, 4);
-            tree.insert(8, 8);
-            tree.insert(16, 16);
+            const tree = new AvlTree<number, string>();
+            tree.insert(1, '1');
+            tree.insert(2, '2');
+            tree.insert(4, '4');
+            tree.insert(8, '8');
+            tree.insert(16, '16');
 
             const iter = jest.fn();
             tree.forEach(iter);
 
             expect(iter).toHaveBeenCalledTimes(5);
 
-            expect(iter).toHaveBeenNthCalledWith(1, tree.findNode(1), 0);
-            expect(iter).toHaveBeenNthCalledWith(2, tree.findNode(2), 1);
-            expect(iter).toHaveBeenNthCalledWith(3, tree.findNode(4), 2);
-            expect(iter).toHaveBeenNthCalledWith(4, tree.findNode(8), 3);
-            expect(iter).toHaveBeenNthCalledWith(5, tree.findNode(16), 4);
+            expect(iter).toHaveBeenNthCalledWith(1, '1', 1, tree);
+            expect(iter).toHaveBeenNthCalledWith(2, '2', 2, tree);
+            expect(iter).toHaveBeenNthCalledWith(3, '4', 4, tree);
+            expect(iter).toHaveBeenNthCalledWith(4, '8', 8, tree);
+            expect(iter).toHaveBeenNthCalledWith(5, '16', 16, tree);
         });
     });
 
@@ -1028,7 +1028,7 @@ describe('AvlTree', () => {
 
         for (const item of items) {
             // console.log(`Removing ${item}`);
-            const removed = tree.remove(item);
+            const removed = tree.delete(item);
             // console.log(`After removing ${item}:\n${tree}`);
             expect(removed).toBe(true);
             checkTree(tree.root);
@@ -1056,14 +1056,14 @@ describe('AvlTree', () => {
 
         start = new Date().getTime();
         for (const item of items) {
-            tree.find(item);
+            tree.get(item);
         }
         elapsed = new Date().getTime() - start;
         console.log(`Found ${insertCount} items in ${elapsed} ms`);
 
         start = new Date().getTime();
         for (const item of items) {
-            tree.remove(item);
+            tree.delete(item);
         }
         elapsed = new Date().getTime() - start;
         console.log(`Removed ${insertCount} items in ${elapsed} ms`);
