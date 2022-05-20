@@ -10,6 +10,36 @@ describe('AvlTree', () => {
         expect(tree.size).toBe(0);
     });
 
+    describe('clear', () => {
+        it('clears the tree', () => {
+            const tree = new AvlTree();
+            tree.insert(1, 1);
+            tree.insert(2, 2);
+            tree.clear();
+
+            expect(tree.size).toBe(0);
+            expect(tree.root).toBeUndefined();
+        });
+    });
+
+    describe('set', () => {
+        it('inserts a node', () => {
+            const tree = new AvlTree();
+
+            spyOn(tree, 'insert').and.callThrough();
+            tree.set(1, 2);
+
+            expect(tree.insert).toHaveBeenCalledWith(1, 2);
+        });
+
+        it('throws an error when a duplicate key is set', () => {
+            const tree = new AvlTree();
+
+            tree.set(1, 2);
+            expect(() => tree.set(1, 100)).toThrowError('Key already exists: 1');
+        });
+    });
+
     describe('insert', () => {
         it('returns the tree node if inserted', () => {
             const tree = new AvlTree<number, string>();
