@@ -161,15 +161,15 @@ export function disconnectChildNodeFromParent<K, V>(childNode: AvlTreeNode<K, V>
     // console.log(`Disconnecting childNode ${childNode.key} from parent ${parent.key}`);
 
     // If old child was left child, replace left with new child
+
     if (parent.left === childNode) {
         // console.log(`Unsetting left child of child node ${childNode.key}'s parent ${parent.key}`);
         parent.left = undefined;
-    } else if (parent.right === childNode) {
+    } /* istanbul ignore else */ else if (parent.right === childNode) {
         // Otherwise old child was right child, replace right
         // console.log(`Unsetting right child of child node ${childNode.key}'s parent ${parent.key}`);
         parent.right = undefined;
     } else {
-        /* istanbul ignore next */
         throw new Error(`Invariant failed: node ${childNode.key} is not a child of ${childNode.parent?.key}`);
     }
     childNode.parent = undefined;
@@ -202,10 +202,9 @@ export function replaceNode<K, V>(node: AvlTreeNode<K, V>, replacement: AvlTreeN
     if (replacement.parent) {
         if (replacement.parent.left === replacement) {
             replacement.parent.left = undefined;
-        } else if (replacement.parent.right === replacement) {
+        } /* istanbul ignore else */ else if (replacement.parent.right === replacement) {
             replacement.parent.right = undefined;
         } else {
-            /* istanbul ignore next */
             throw new Error(
                 `Invariant failed: node ${replacement.key} has parent ${replacement.parent.key} that has no link back`
             );
@@ -226,10 +225,9 @@ export function replaceNode<K, V>(node: AvlTreeNode<K, V>, replacement: AvlTreeN
     if (parent) {
         if (parent.left === node) {
             parent.left = replacement;
-        } else if (parent.right === node) {
+        } /* istanbul ignore else */ else if (parent.right === node) {
             parent.right = replacement;
         } else {
-            /* istanbul ignore next */
             throw new Error(`Invariant failed: node ${node.key} has parent ${node.parent?.key} that has no link back`);
         }
         node.parent = undefined;
@@ -304,7 +302,7 @@ export function nodeToJson<K, V>(node: AvlTreeNode<K, V>): AvlTreeNode<K, V> {
     const json: AvlTreeNode<K, V> = {
         key: node.key,
         value: node.value,
-        balanceFactor: node?.balanceFactor
+        balanceFactor: node.balanceFactor
     };
     if (node.left) {
         json.left = nodeToJson(node.left);
