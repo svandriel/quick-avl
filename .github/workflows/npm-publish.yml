@@ -15,8 +15,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 17
-      - run: npm verify
-      - run: npm test
+      - run: npm run verify
 
   publish-npm:
     needs: build
