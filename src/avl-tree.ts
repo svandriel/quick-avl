@@ -1,7 +1,6 @@
-import { AvlTreeNode } from './avl-tree-node';
+import { AvlTreeNode, AvlTreeNodeJson } from './avl-tree-node';
 import {
     disconnectChildNodeFromParent,
-    nodeToJson,
     printTreeNode,
     replaceChild,
     replaceNode,
@@ -48,8 +47,8 @@ export class AvlTree<K = any, V = any> implements Map<K, V> {
      * (i.e. has no circular structure)
      * @returns A JSON-friendly represenation of this tree.
      */
-    toJSON(): AvlTreeNode<K, V> | undefined {
-        return this._root && nodeToJson(this._root);
+    toJSON(): AvlTreeNodeJson<K, V> | undefined {
+        return this._root?.toJSON();
     }
 
     /**
@@ -115,11 +114,7 @@ export class AvlTree<K = any, V = any> implements Map<K, V> {
     insert(key: K, value: V): AvlTreeNode<K, V> | undefined {
         // Shortcut for root
         if (!this._root) {
-            this._root = {
-                key,
-                value,
-                balanceFactor: 0
-            };
+            this._root = new AvlTreeNode<K, V>(key, value);
             this._size += 1;
             return this._root;
         }
@@ -149,12 +144,7 @@ export class AvlTree<K = any, V = any> implements Map<K, V> {
             throw new Error('Invariant failed: no parent node found');
         }
 
-        const newNode: AvlTreeNode<K, V> = {
-            key,
-            value,
-            parent,
-            balanceFactor: 0
-        };
+        const newNode = new AvlTreeNode<K, V>(key, value, parent);
 
         if (cmp < 0) {
             parent.left = newNode;
@@ -474,48 +464,18 @@ export class AvlTree<K = any, V = any> implements Map<K, V> {
         }
     }
 
+    /**
+     * @deprecated Use AvlTreeNode.predecessor() instead
+     */
     predecessor(node: AvlTreeNode<K, V>): AvlTreeNode<K, V> | undefined {
-        if (node.left) {
-            // Find rightmost child
-            let current = node.left;
-            while (current.right) {
-                current = current.right;
-            }
-            return current;
-        }
-
-        let child: AvlTreeNode<K, V> = node;
-        let parent = node.parent;
-
-        // Travel up until the current node is no longer the left child of its parent
-        while (parent?.left === child) {
-            child = parent;
-            parent = child.parent;
-        }
-
-        return parent;
+        return node.predecessor();
     }
 
+    /**
+     * @deprecated Use AvlTreeNode.successor() instead
+     */
     successor(node: AvlTreeNode<K, V>): AvlTreeNode<K, V> | undefined {
-        if (node.right) {
-            // Find leftmost child
-            let current = node.right;
-            while (current.left) {
-                current = current.left;
-            }
-            return current;
-        }
-
-        let child: AvlTreeNode<K, V> = node;
-        let parent = node.parent;
-
-        // Travel up until the current node is no longer the right child of its parent
-        while (parent?.right === child) {
-            child = parent;
-            parent = child.parent;
-        }
-
-        return parent;
+        return node.successor();
     }
 
     /**

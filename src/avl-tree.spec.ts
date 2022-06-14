@@ -916,15 +916,15 @@ describe('AvlTree', () => {
                 tree.print();
             }
 
-            expect(tree.predecessor(node40)?.key).toBeUndefined();
-            expect(tree.predecessor(node50)?.key).toBe(40);
-            expect(tree.predecessor(node75)?.key).toBe(50);
-            expect(tree.predecessor(node100)?.key).toBe(75);
-            expect(tree.predecessor(node110)?.key).toBe(100);
-            expect(tree.predecessor(node125)?.key).toBe(110);
-            expect(tree.predecessor(node150)?.key).toBe(125);
-            expect(tree.predecessor(node200)?.key).toBe(150);
-            expect(tree.predecessor(node220)?.key).toBe(200);
+            expect(node40.predecessor()?.key).toBeUndefined();
+            expect(node50.predecessor()?.key).toBe(40);
+            expect(node75.predecessor()?.key).toBe(50);
+            expect(node100.predecessor()?.key).toBe(75);
+            expect(node110.predecessor()?.key).toBe(100);
+            expect(node125.predecessor()?.key).toBe(110);
+            expect(node150.predecessor()?.key).toBe(125);
+            expect(node200.predecessor()?.key).toBe(150);
+            expect(node220.predecessor()?.key).toBe(200);
         });
 
         it('works in big cases', () => {
@@ -934,7 +934,7 @@ describe('AvlTree', () => {
             });
             repeat(99, i => {
                 const node = tree.getNode(i + 1) as AvlTreeNode<number, number>;
-                expect(tree.predecessor(node)?.key).toBe(i);
+                expect(node.predecessor()?.key).toBe(i);
             });
         });
     });
@@ -957,15 +957,15 @@ describe('AvlTree', () => {
                 tree.print();
             }
 
-            expect(tree.successor(node40)?.key).toBe(50);
-            expect(tree.successor(node50)?.key).toBe(75);
-            expect(tree.successor(node75)?.key).toBe(100);
-            expect(tree.successor(node100)?.key).toBe(110);
-            expect(tree.successor(node110)?.key).toBe(125);
-            expect(tree.successor(node125)?.key).toBe(150);
-            expect(tree.successor(node150)?.key).toBe(200);
-            expect(tree.successor(node200)?.key).toBe(220);
-            expect(tree.successor(node220)?.key).toBeUndefined();
+            expect(node40.successor()?.key).toBe(50);
+            expect(node50.successor()?.key).toBe(75);
+            expect(node75.successor()?.key).toBe(100);
+            expect(node100.successor()?.key).toBe(110);
+            expect(node110.successor()?.key).toBe(125);
+            expect(node125.successor()?.key).toBe(150);
+            expect(node150.successor()?.key).toBe(200);
+            expect(node200.successor()?.key).toBe(220);
+            expect(node220.successor()?.key).toBeUndefined();
         });
 
         it('works in big cases', () => {
@@ -975,7 +975,7 @@ describe('AvlTree', () => {
             });
             repeat(99, i => {
                 const node = tree.getNode(i) as AvlTreeNode<number, number>;
-                expect(tree.successor(node)?.key).toBe(i + 1);
+                expect(node.successor()?.key).toBe(i + 1);
             });
         });
     });

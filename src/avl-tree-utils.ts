@@ -298,21 +298,6 @@ function row<K, V>(
     }
 }
 
-export function nodeToJson<K, V>(node: AvlTreeNode<K, V>): AvlTreeNode<K, V> {
-    const json: AvlTreeNode<K, V> = {
-        key: node.key,
-        value: node.value,
-        balanceFactor: node.balanceFactor
-    };
-    if (node.left) {
-        json.left = nodeToJson(node.left);
-    }
-    if (node.right) {
-        json.right = nodeToJson(node.right);
-    }
-    return json;
-}
-
 export function checkTree<K, V>(node: AvlTreeNode<K, V> | undefined): void {
     if (!node) {
         return;

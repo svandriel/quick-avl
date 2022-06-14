@@ -446,12 +446,7 @@ function setRight(parent: AvlTreeNode<number, number>, num: number): AvlTreeNode
 }
 
 function createNode(num: number): AvlTreeNode<number, number> {
-    const newNode: AvlTreeNode<number, number> = {
-        key: num,
-        value: num,
-        balanceFactor: 0
-    };
-    return newNode;
+    return new AvlTreeNode<number, number>(num, num);
 }
 
 function setBalanceFactorAndComputeHeight<K, V>(node: AvlTreeNode<K, V>): number {
