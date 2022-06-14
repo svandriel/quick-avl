@@ -1,6 +1,6 @@
 {
   "name": "quick-avl",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "AVL tree: a self-balancing binary search tree",
   "keywords": [
     "avl",
